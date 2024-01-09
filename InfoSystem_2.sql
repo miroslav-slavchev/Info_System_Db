@@ -1,0 +1,54 @@
+
+-- 2.1.1. SELECT Products
+SELECT * FROM Products;
+
+-- 2.1.2. SELECTT LASTNAME 
+SELECT LASTNAME FROM Customers;
+
+-- 2.1.3. SELECT ORDER
+SELECT OrderID, CustomerID FROM Orders WHERE OrderDate = '2021/01/12';
+SELECT * FROM Orders WHERE OrderDate = '2021/01/12';
+
+-- 2.1.4. SELEC CUSTOMERS
+SELECT * FROM Customers WHERE FIRSTNAME LIKE N'А%';
+
+-- 2.1.5. SELECT BY PRICE
+SELECT * FROM Products WHERE UNITPRICE > 5;
+
+-- 2.1.6. SELECT NEWPRICE
+SELECT ProductID, NAME, UNITPRICE, UNITPRICE + 1.1 AS NEWPRICE FROM Products;
+
+-- 2.1.7. NAME
+SELECT CONCAT(FIRSTNAME, ' ', LASTNAME) AS FULLNAME FROM Customers;
+
+-- 2.1.8. Products
+SELECT * FROM Products WHERE UNITPRICE >= 7;
+
+-- 2.1.9. Products
+SELECT * FROM Products WHERE UNITPRICE = 2 OR UNITPRICE = 5;
+
+-- 2.1.10. Products
+SELECT * FROM Products WHERE UNITPRICE >= 2 AND UNITPRICE <= 5;
+
+-- 2.1.11. OrderDetail
+SELECT * FROM OrderDetail ORDER BY QTY DESC;
+
+-- 2.1.12. Products Count
+SELECT COUNT(ProductID) FROM OrderDetail;
+
+-- 2.1.13. MIN MAX
+SELECT MIN(UNITPRICE) AS MIN_PRICE,MAX(UNITPRICE) AS MAX_PRICE FROM Products;
+
+-- 2.2.1 MULTIPLE TABLES
+SELECT Orders.OrderID, Orders.OrderDate, Customers.FirstName, Customers.LastName
+FROM Orders
+INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
+
+-- 2.2.2 Add A TODAY Order
+DECLARE @CREATE_ORDER_ID INT = (SELECT MAX(OrderID) + 1 FROM Orders);
+INSERT INTO Orders(OrderID,OrderDate,CustomerID)
+VALUES(@CREATE_ORDER_ID, GETDATE(), (SELECT CustomerID FROM Customers WHERE FIRSTNAME=N'Иван'));
+
+DECLARE @LAST_ORDER_ID INT = (SELECT MAX(OrderID) FROM Orders);
+SELECT * FROM Orders WHERE OrderID = @LAST_ORDER_ID;
+DELETE FROM Orders WHERE OrderID = @LAST_ORDER_ID;
