@@ -47,7 +47,7 @@ INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
 -- 2.2.2 Add A TODAY Order
 DECLARE @CREATE_ORDER_ID INT = (SELECT MAX(OrderID) + 1 FROM Orders);
 INSERT INTO Orders(OrderID,OrderDate,CustomerID)
-VALUES(@CREATE_ORDER_ID, GETDATE(), (SELECT CustomerID FROM Customers WHERE FIRSTNAME=N'Алекс'));
+VALUES(@CREATE_ORDER_ID, GETDATE(), (SELECT TOP(1) CustomerID FROM Customers));
 
 DECLARE @LAST_ORDER_ID INT = (SELECT MAX(OrderID) FROM Orders);
 SELECT * FROM Orders WHERE OrderID = @LAST_ORDER_ID;
